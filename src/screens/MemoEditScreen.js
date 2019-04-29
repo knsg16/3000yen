@@ -7,7 +7,7 @@ class MemoEditScreen extends React.Component {
     return (
       <View style={styles.container}>
         <TextInput style={styles.editInput} multiline value="hi" />
-        <CircleButton name="check" />
+        <CircleButton name="check" onPress={() => {this.props.navigation.goBack(); }} />
       </View>
     );
   }
