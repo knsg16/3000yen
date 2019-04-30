@@ -1,17 +1,49 @@
 import React from 'react';
 import { StyleSheet, View, TextInput, TouchableHighlight, Text } from 'react-native';
-// import CircleButton from '../elements/CircleButton';
+import firebase from 'firebase';
+
 
 class SignupScreen extends React.Component {
+  state = {
+    email: '',
+    password: '',
+  }
+
+  handleSubmit() {
+    firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
+      .then((user) => {
+        console.log('Success:', user);
+        this.props.navigation.navigate('Home');
+      })
+      .catch((error) => {
+        console.log('Error:',error);
+      });
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.title}>
           メンバー登録
         </Text>
-        <TextInput style={styles.input} value="Email Address" />
-        <TextInput style={styles.input} value="Password" />
-        <TouchableHighlight style={styles.button} title="送信" onPress={() => {}} underlayColor="#C70F66">
+        <TextInput
+          style={styles.input}
+          value={this.state.email}
+          onChangeText={(text) => { this.setState({ email: text }); }}
+          autoCapitalize="none"
+          autoCorrect={false}
+          placeholder="Email Address"
+        />
+        <TextInput
+          style={styles.input}
+          value={this.state.password}
+          onChangeText={(text) => { this.setState({ password: text }); }}
+          autoCapitalize="none"
+          autoCorrect={false}
+          placeholder="Password"
+          secureTextEntry
+        />
+        <TouchableHighlight style={styles.button} title="送信" onPress={this.handleSubmit.bind(this)} underlayColor="#C70F66">
           <Text style={styles.buttonTitle}>
             送信する
           </Text>
