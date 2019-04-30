@@ -6,6 +6,8 @@ npm-debug.*
 *.key
 *.mobileprovision
 
-# Rubymine
+# RubyMine
 .idea/*
 
+# Env file
+env.json
