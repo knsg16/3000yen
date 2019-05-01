@@ -1,5 +1,6 @@
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import firebase from 'firebase';
+import { Platform } from 'react-native';
 
 import MemoListScreen from './src/screens/MemoListScreen';
 import MemoCreateScreen from './src/screens/MemoCreateScreen';
@@ -36,7 +37,16 @@ const App = createStackNavigator({
     headerTintColor: '#fff',
     headerBackTitle: null,
     headerStyle: {
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 2 },
+      shadowOpacity: 0.2,
+      shadowRadius: 2,
       backgroundColor: '#265366',
+      ...Platform.select({
+        android: {
+          paddingTop: 20,
+        },
+      }),
     },
     headerTitleStyle: {
       color: '#fff',

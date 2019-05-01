@@ -29,7 +29,8 @@ class MemoEditScreen extends React.Component {
           style={styles.editInput}
           multiline
           value={this.state.body}
-          onChangeText={(text) => {this.setState({ body: text }); }}
+          onChangeText={(text) => { this.setState({ body: text }); }}
+          textAlignVertical="top"
         />
         <CircleButton
           name="check"
