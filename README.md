@@ -41,9 +41,9 @@ eslintrc.jsonファイルを作成
 }
 
 # 以下を必要な時にインストール
-- expo/vector-icons @8.0.0
-- react-navigation @3.9.1
-- firebase @5.10.1
+npm install @expo/vector-icons@8.0.0
+npm install --save react-navigation
+npm install --save firebase
 ```
 
 
