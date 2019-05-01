@@ -10,6 +10,7 @@ class MemoListScreen extends React.Component {
   state = {
     memoList: [],
   }
+
   // componentが表示される前に処理が行われるということ
   componentWillMount() {
     const { currentUser } = firebase.auth();

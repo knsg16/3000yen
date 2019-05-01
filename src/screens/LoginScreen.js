@@ -1,6 +1,8 @@
 import React from 'react';
 import { StyleSheet, View, TextInput, TouchableHighlight, Text } from 'react-native';
 import firebase from 'firebase';
+import { StackActions, NavigationActions } from 'react-navigation';
+
 
 class LoginScreen extends React.Component {
   state = {
@@ -14,6 +16,13 @@ class LoginScreen extends React.Component {
       .then((user) => {
         console.log('Success', user);
         this.props.navigation.navigate('Home');
+        const reactAction = StackActions.reset({
+          index: 0,
+          actions: [
+            NavigationActions.navigate({routeName: 'Home'}),
+          ],
+        });
+        this.props.navigation.dispatch(reactAction);
       })
       .catch((error) => {
         console.log('Error:', error);

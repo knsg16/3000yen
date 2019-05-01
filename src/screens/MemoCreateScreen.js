@@ -14,8 +14,8 @@ class MemoEditScreen extends React.Component {
       body: this.state.body,
       createdOn: new Date(),
     })
-      .then((docRef) => {
-        console.log('memoId:', docRef.id);
+      .then(() => {
+        this.props.navigation.goBack();
       })
       .catch((error) => {
         console.log(error);
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
 
   },
   editInput: {
-    backgroundColor: '#ddd',
+    backgroundColor: '#fff',
     flex: 1,
     paddingTop: 32,
     paddingLeft: 16,

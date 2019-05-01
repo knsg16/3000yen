@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
 
   },
   editInput: {
-    backgroundColor: '#ddd',
+    backgroundColor: '#fff',
     flex: 1,
     paddingTop: 32,
     paddingLeft: 16,
