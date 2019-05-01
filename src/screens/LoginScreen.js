@@ -58,7 +58,7 @@ class LoginScreen extends React.Component {
           placeholder="Password"
           secureTextEntry
         />
-        <TouchableHighlight style={styles.button} title="送信" onPress={this.handleSubmit.bind(this)} underlayColor="#C70F66">
+        <TouchableHighlight style={styles.button} title="送信" onPress={this.handleSubmit.bind(this)} underlayColor="#DF781A">
           <Text style={styles.buttonTitle}>
             ログインする
           </Text>
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     marginBottom: 28,
   },
   button: {
-    backgroundColor: '#E31676',
+    backgroundColor: '#FD8A21',
     height: 48,
     borderRadius: 4,
     justifyContent: 'center',

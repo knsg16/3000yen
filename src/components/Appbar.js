@@ -6,7 +6,7 @@ class Appbar extends React.Component {
     return (
       <View style={styles.appbar}>
         <View>
-          <Text style={styles.appbarTitle}>MEMOT</Text>
+          <Text style={styles.appbarTitle}>1日3000円生活</Text>
         </View>
       </View>
     );
@@ -23,8 +23,8 @@ const styles = StyleSheet.create({
     right: 0,
     height: 78,
     paddingTop: 30,
-    backgroundColor: '#265366',
-    justifyContent: 'center' ,
+    backgroundColor: '#1E8CBE',
+    justifyContent: 'center',
     alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 0 },

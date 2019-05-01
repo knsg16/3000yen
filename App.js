@@ -33,7 +33,7 @@ const App = createStackNavigator({
   MemoCreate: { screen: MemoCreateScreen },
 }, {
   defaultNavigationOptions: {
-    headerTitle: 'Memot',
+    headerTitle: '1日3000円生活',
     headerTintColor: '#fff',
     headerBackTitle: null,
     headerStyle: {
@@ -41,7 +41,7 @@ const App = createStackNavigator({
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.2,
       shadowRadius: 2,
-      backgroundColor: '#265366',
+      backgroundColor: '#1E8CBE',
       ...Platform.select({
         android: {
           paddingTop: 20,
