@@ -36,19 +36,31 @@ class MemoListScreen extends React.Component {
     return (
       <View style={styles.container}>
         <View style={[styles.box, { backgroundColor: '#78C8E6' }]}>
-          <Text style={styles.header}>今日残り金額</Text>
-          <Text style={styles.date}>5/2</Text>
-          <Text style={styles.amount}>3,000円</Text>
+          <View style={styles.headerBox}>
+            <Text style={styles.header}>今日残り金額</Text>
+          </View>
+          <View style={styles.contentBox}>
+            <Text style={styles.date}>5/2</Text>
+            <Text style={styles.amount}>3,000円</Text>
+          </View>
         </View>
         <View style={[styles.box, { backgroundColor: '#DA771B' }]}>
-          <Text style={styles.header}>今週残り金額</Text>
-          <Text style={styles.date}>4/29 - 5/5</Text>
-          <Text style={styles.amount}>3,000円</Text>
+          <View style={styles.headerBox}>
+            <Text style={styles.header}>今週残り金額</Text>
+          </View>
+          <View style={styles.contentBox}>
+            <Text style={styles.date}>4/29 - 5/5</Text>
+            <Text style={styles.amount}>3,000円</Text>
+          </View>
         </View>
         <View style={[styles.box, { backgroundColor: '#005684' }]}>
-          <Text style={styles.header}>今月残り金額</Text>
-          <Text style={styles.date}>5/1 - 5/31</Text>
-          <Text style={styles.amount}>3,000円</Text>
+          <View style={styles.headerBox}>
+            <Text style={styles.header}>今月残り金額</Text>
+          </View>
+          <View style={styles.contentBox}>
+            <Text style={styles.date}>5/1 - 5/31</Text>
+            <Text style={styles.amount}>3,000円</Text>
+          </View>
         </View>
 
         <MemoList memoList={this.state.memoList} navigation={this.props.navigation} />
@@ -68,33 +80,42 @@ const styles = StyleSheet.create({
     padding: 10,
     width: '90%',
     height: 96,
-    // marginBottom: 16,
     // borderWidth: 1,
-    // alignItems: 'center',
     alignSelf: 'center',
     marginTop: 15,
     display: 'flex',
     flexDirection: 'row',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
   },
-  header: {
+  headerBox: {
     width: '40%',
     // borderWidth: 1,
     fontSize: 24,
     color: '#fff',
   },
-  date: {
+  contentBox: {
+    width: '60%',
     // borderWidth: 1,
-    width: '10%',
+    fontSize: 24,
     color: '#fff',
   },
-  amount: {
-    paddingTop: 30,
-    fontSize: 32,
+  header: {
+    fontSize: 24,
+    color: '#fff',
+  },
+  date: {
     // borderWidth: 1,
+    color: '#fff',
+    height: '30%',
+  },
+  amount: {
+    // borderWidth: 1,
+    height: '70%',
+    fontSize: 32,
     textAlign: 'right',
     color: '#fff',
     fontWeight: 'bold',
-    width: '50%',
   },
 });
 
