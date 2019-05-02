@@ -8,25 +8,31 @@ import CircleButton from '../elements/CircleButton';
 
 class MemoListScreen extends React.Component {
   state = {
-    memoList: [],
+    amount: 0,
   }
 
   // componentが表示される前に処理が行われるということ
-  // componentWillMount() {
-  //   const { currentUser } = firebase.auth();
-  //   const db = firebase.firestore();
-  //   // db.settings({ timestampsInSnapshots: true });
-  //   db.collection(`users/${currentUser.uid}/memos`)
-  //     .onSnapshot((snapshot) => {
-  //       const memoList = [];
-  //       snapshot.forEach((doc) => {
-  //         console.log(doc.data());
-  //         // ...は合体させる時の書き方
-  //         memoList.push({ ...doc.data(), key: doc.id });
-  //       });
-  //       this.setState({ memoList });
-  //     });
-  // }
+  componentWillMount() {
+    const { currentUser } = firebase.auth();
+    const db = firebase.firestore();
+    let a = 0;
+    const today = new Date().toISOString().split('T')[0];
+    // db.settings({ timestampsInSnapshots: true });
+    db.collection(`users/${currentUser.uid}/records`)
+      .onSnapshot((snapshot) => {
+        snapshot.forEach((doc) => {
+          console.log('amount: ', doc.data().amount);
+          // ...は合体させる時の書き方
+          const createdOn = doc.data().createdOn.toDate().toISOString().split('T')[0];
+          console.log('createdOn: ', createdOn);
+          if (createdOn === today) {
+            a += doc.data().amount;
+          }
+          console.log('a:', a);
+        });
+        this.setState({ amount: 3000 - a });
+      });
+  }
 
   handlePress() {
     this.props.navigation.navigate('MemoCreate');
@@ -41,7 +47,10 @@ class MemoListScreen extends React.Component {
           </View>
           <View style={styles.contentBox}>
             <Text style={styles.date}>5/2</Text>
-            <Text style={styles.amount}>3,000円</Text>
+            <Text style={styles.amount}>
+              {this.state.amount.toLocaleString()}
+              円
+            </Text>
           </View>
         </View>
         <View style={[styles.box, { backgroundColor: '#DA771B' }]}>
@@ -62,8 +71,7 @@ class MemoListScreen extends React.Component {
             <Text style={styles.amount}>3,000円</Text>
           </View>
         </View>
-
-        <MemoList memoList={this.state.memoList} navigation={this.props.navigation} />
+        {/* <MemoList memoList={this.state.memoList} navigation={this.props.navigation} /> */}
         <CircleButton name="plus" onPress={this.handlePress.bind(this)} />
       </View>
     );
