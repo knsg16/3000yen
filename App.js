@@ -25,9 +25,9 @@ const config = {
 firebase.initializeApp(config);
 
 const App = createStackNavigator({
+  Home: { screen: MemoListScreen },
   Login: { screen: LoginScreen },
   Signup: { screen: SignupScreen },
-  Home: { screen: MemoListScreen },
   MemoDetail: { screen: MemoDetailScreen },
   MemoEdit: { screen: MemoEditScreen },
   MemoCreate: { screen: MemoCreateScreen },
