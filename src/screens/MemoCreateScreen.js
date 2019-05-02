@@ -10,11 +10,14 @@ class MemoEditScreen extends React.Component {
 
   handlePress() {
     const db = firebase.firestore();
-    db.collection(`users/${firebase.auth().currentUser.uid}/memos`).add({
-      body: this.state.body,
+    db.collection(`users/${firebase.auth().currentUser.uid}/records`).add({
+      // body: this.state.body,
+      body: 'ジュース',
+      amount: 100,
       createdOn: new Date(),
     })
-      .then(() => {
+      .then((docRef) => {
+        console.log('Successfully Added: ', docRef.id);
         this.props.navigation.goBack();
       })
       .catch((error) => {

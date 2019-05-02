@@ -8,8 +8,8 @@ import { StackActions, NavigationActions } from 'react-navigation';
 
 class LoginScreen extends React.Component {
   state = {
-    email: '',
-    password: '',
+    email: 'test@gmail.com',
+    password: 'password',
   }
 
   // eslint-disable-next-line
