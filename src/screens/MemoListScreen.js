@@ -9,23 +9,22 @@ import CircleButton from '../elements/CircleButton';
 class MemoListScreen extends React.Component {
   state = {
     amount: 0,
+    today: new Date().toISOString().split('T')[0],
   }
 
   // componentが表示される前に処理が行われるということ
   componentWillMount() {
     const { currentUser } = firebase.auth();
     const db = firebase.firestore();
-    let a = 0;
-    const today = new Date().toISOString().split('T')[0];
     // db.settings({ timestampsInSnapshots: true });
+    let a = 0;
     db.collection(`users/${currentUser.uid}/records`)
       .onSnapshot((snapshot) => {
         snapshot.forEach((doc) => {
           console.log('amount: ', doc.data().amount);
-          // ...は合体させる時の書き方
           const createdOn = doc.data().createdOn.toDate().toISOString().split('T')[0];
           console.log('createdOn: ', createdOn);
-          if (createdOn === today) {
+          if (createdOn === this.state.today) {
             a += doc.data().amount;
           }
           console.log('a:', a);
@@ -46,7 +45,7 @@ class MemoListScreen extends React.Component {
             <Text style={styles.header}>今日残り金額</Text>
           </View>
           <View style={styles.contentBox}>
-            <Text style={styles.date}>5/2</Text>
+            <Text style={styles.date}>{this.state.today}</Text>
             <Text style={styles.amount}>
               {this.state.amount.toLocaleString()}
               円
