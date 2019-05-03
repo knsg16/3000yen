@@ -6,40 +6,33 @@ import firebase from 'firebase';
 import MemoList from '../components/MemoList';
 import CircleButton from '../elements/CircleButton';
 
+const dt = new Date();
+const y = dt.getFullYear();
+const m = (`00${dt.getMonth() + 1}`).slice(-2);
+const d = (`00${dt.getDate()}`).slice(-2);
+const today = `${y}-${m}-${d}`;
+
 class MemoListScreen extends React.Component {
   state = {
-    amount: 0,
-    today: new Date().toISOString().split('T')[0],
+    total: 0,
   }
 
-  // componentが表示される前に処理が行われるということ
-  componentWillMount() {
-    console.log('state amount: ', this.state.amount);
+  constructor() {
+    super();
     const { currentUser } = firebase.auth();
     const db = firebase.firestore();
-    let a = 0;
-    const today = this.getNowYMD();
     console.log('today: ', today);
     db.collection(`users/${currentUser.uid}/records`)
       .where('date', '==', today)
       .onSnapshot((snapshot) => {
-        console.log('snapshot called');
+        let a = 0;
         snapshot.forEach((doc) => {
           console.log('amount: ', doc.data().amount);
           a += doc.data().amount;
-          console.log('a:', a);
         });
-        this.setState({ amount: 3000 - a });
+        this.setState({ total: a });
+        console.log('total:', this.state.total);
       });
-  }
-
-  getNowYMD() {
-    const dt = new Date();
-    const y = dt.getFullYear();
-    const m = (`00${dt.getMonth() + 1}`).slice(-2);
-    const d = (`00${dt.getDate()}`).slice(-2);
-    const result = `${y}-${m}-${d}`;
-    return result;
   }
 
   handlePress() {
@@ -54,9 +47,9 @@ class MemoListScreen extends React.Component {
             <Text style={styles.header}>今日残り金額</Text>
           </View>
           <View style={styles.contentBox}>
-            <Text style={styles.date}>{this.state.today}</Text>
+            <Text style={styles.date}>{today}</Text>
             <Text style={styles.amount}>
-              {this.state.amount.toLocaleString()}
+              {3000 - this.state.total}
               円
             </Text>
           </View>

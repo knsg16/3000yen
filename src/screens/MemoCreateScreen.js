@@ -30,7 +30,6 @@ class MemoEditScreen extends React.Component {
   handlePress() {
     const db = firebase.firestore();
     db.collection(`users/${firebase.auth().currentUser.uid}/records`).add({
-      // body: this.state.body,
       body: this.state.body,
       amount: Number(this.state.amount),
       date: this.state.date,
@@ -52,8 +51,9 @@ class MemoEditScreen extends React.Component {
           style={styles.amount}
           multiline
           value={this.state.amount}
-          onChangeText={(amount) => { this.setState({ amount: amount }); }}
+          onChangeText={(amount) => { this.setState({ amount }); }}
           textAlignVertical="top"
+          placeholder="100"
         />
         <View style={styles.date}>
           <View style={styles.iconBox}>
@@ -63,8 +63,9 @@ class MemoEditScreen extends React.Component {
             style={styles.dateInput}
             multiline
             value={this.state.createdOn}
-            onChangeText={(date) => { this.setState({ date: date }); }}
+            onChangeText={(date) => { this.setState({ date }); }}
             textAlignVertical="top"
+            placeholder="2019-05-01"
           />
         </View>
         <View style={styles.body}>
@@ -75,8 +76,9 @@ class MemoEditScreen extends React.Component {
             style={styles.bodyInput}
             multiline
             value={this.state.body}
-            onChangeText={(body) => { this.setState({ body: body }); }}
+            onChangeText={(body) => { this.setState({ body }); }}
             textAlignVertical="top"
+            placeholder="令和最初のビール"
           />
         </View>
         <CircleButton
@@ -94,40 +96,42 @@ const styles = StyleSheet.create({
 
   },
   amount: {
-    backgroundColor: '#ddd',
+    backgroundColor: '#fff',
     // flex: 1,
     paddingTop: 32,
     paddingLeft: 16,
     paddingRight: 16,
     paddingBottom: 16,
     fontSize: 32,
-    borderWidth: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: '#979797',
     height: 108,
     textAlign: 'right',
     fontWeight: 'bold',
   },
   date: {
-    backgroundColor: '#ddd',
+    backgroundColor: '#fff',
     // flex: 1,
     padding: 16,
     fontSize: 16,
-    borderWidth: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: '#979797',
     height: 108,
     flexDirection: 'row',
   },
   body: {
-    backgroundColor: '#ddd',
+    backgroundColor: '#fff',
     // flex: 1,
     padding: 16,
     fontSize: 16,
-    borderWidth: 1,
+    borderBottomWidth: 1,
+    borderBottomColor: '#979797',
     height: 108,
     flexDirection: 'row',
   },
   iconBox: {
     width: '15%',
-    borderWidth: 1,
-
+    // borderWidth: 1,
   },
   icon: {
     fontFamily: 'FontAwesome',
@@ -137,14 +141,14 @@ const styles = StyleSheet.create({
   },
   dateInput: {
     width: '85%',
-    borderWidth: 1,
+    // borderWidth: 1,
     fontSize: 24,
     paddingTop: 20,
     // placeholder: '2019/05/01',
   },
   bodyInput: {
     width: '85%',
-    borderWidth: 1,
+    // borderWidth: 1,
     fontSize: 24,
     paddingTop: 20,
     // placeholder: '2019/05/01',
