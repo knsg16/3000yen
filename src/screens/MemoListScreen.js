@@ -14,23 +14,32 @@ class MemoListScreen extends React.Component {
 
   // componentが表示される前に処理が行われるということ
   componentWillMount() {
+    console.log('state amount: ', this.state.amount);
     const { currentUser } = firebase.auth();
     const db = firebase.firestore();
-    // db.settings({ timestampsInSnapshots: true });
     let a = 0;
+    const today = this.getNowYMD();
+    console.log('today: ', today);
     db.collection(`users/${currentUser.uid}/records`)
+      .where('date', '==', today)
       .onSnapshot((snapshot) => {
+        console.log('snapshot called');
         snapshot.forEach((doc) => {
           console.log('amount: ', doc.data().amount);
-          const createdOn = doc.data().createdOn.toDate().toISOString().split('T')[0];
-          console.log('createdOn: ', createdOn);
-          if (createdOn === this.state.today) {
-            a += doc.data().amount;
-          }
+          a += doc.data().amount;
           console.log('a:', a);
         });
         this.setState({ amount: 3000 - a });
       });
+  }
+
+  getNowYMD() {
+    const dt = new Date();
+    const y = dt.getFullYear();
+    const m = (`00${dt.getMonth() + 1}`).slice(-2);
+    const d = (`00${dt.getDate()}`).slice(-2);
+    const result = `${y}-${m}-${d}`;
+    return result;
   }
 
   handlePress() {

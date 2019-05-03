@@ -26,11 +26,11 @@ firebase.initializeApp(config);
 
 const App = createStackNavigator({
   Login: { screen: LoginScreen },
+  MemoCreate: { screen: MemoCreateScreen },
   Home: { screen: MemoListScreen },
   Signup: { screen: SignupScreen },
   MemoDetail: { screen: MemoDetailScreen },
   MemoEdit: { screen: MemoEditScreen },
-  MemoCreate: { screen: MemoCreateScreen },
 }, {
   defaultNavigationOptions: {
     headerTitle: '1日3000円生活',

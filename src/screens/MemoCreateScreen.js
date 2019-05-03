@@ -1,19 +1,39 @@
 import React from 'react';
 import { StyleSheet, View, TextInput } from 'react-native';
-import CircleButton from '../elements/CircleButton';
 import firebase from 'firebase';
+import { createIconSet } from '@expo/vector-icons';
+import { Font } from 'expo';
+import fontAwesome from '../../assets/fonts/fa-solid-900.ttf';
+import CircleButton from '../elements/CircleButton';
+
+const CustomIcon = createIconSet({
+  pencil: '\uf303',
+  plus: '\uf067',
+  check: '\uf00c',
+  calendar: '\uf073',
+}, 'FontAwesome');
 
 class MemoEditScreen extends React.Component {
   state = {
     body: '',
+    amount: 0,
+    date: '',
+  }
+
+  // 読み込まれたらFontをloadしてという処理
+  async componentWillMount() {
+    await Font.loadAsync({
+      FontAwesome: fontAwesome,
+    });
   }
 
   handlePress() {
     const db = firebase.firestore();
     db.collection(`users/${firebase.auth().currentUser.uid}/records`).add({
       // body: this.state.body,
-      body: 'ジュース',
-      amount: 100,
+      body: this.state.body,
+      amount: Number(this.state.amount),
+      date: this.state.date,
       createdOn: new Date(),
     })
       .then((docRef) => {
@@ -29,12 +49,36 @@ class MemoEditScreen extends React.Component {
     return (
       <View style={styles.container}>
         <TextInput
-          style={styles.editInput}
+          style={styles.amount}
           multiline
-          value={this.state.body}
-          onChangeText={(text) => { this.setState({ body: text }); }}
+          value={this.state.amount}
+          onChangeText={(amount) => { this.setState({ amount: amount }); }}
           textAlignVertical="top"
         />
+        <View style={styles.date}>
+          <View style={styles.iconBox}>
+            <CustomIcon name="calendar" style={styles.icon} />
+          </View>
+          <TextInput
+            style={styles.dateInput}
+            multiline
+            value={this.state.createdOn}
+            onChangeText={(date) => { this.setState({ date: date }); }}
+            textAlignVertical="top"
+          />
+        </View>
+        <View style={styles.body}>
+          <View style={styles.iconBox}>
+            <CustomIcon name="pencil" style={styles.icon} />
+          </View>
+          <TextInput
+            style={styles.bodyInput}
+            multiline
+            value={this.state.body}
+            onChangeText={(body) => { this.setState({ body: body }); }}
+            textAlignVertical="top"
+          />
+        </View>
         <CircleButton
           name="check"
           onPress={this.handlePress.bind(this)}
@@ -49,14 +93,61 @@ const styles = StyleSheet.create({
     width: '100%',
 
   },
-  editInput: {
-    backgroundColor: '#fff',
-    flex: 1,
+  amount: {
+    backgroundColor: '#ddd',
+    // flex: 1,
     paddingTop: 32,
     paddingLeft: 16,
     paddingRight: 16,
     paddingBottom: 16,
+    fontSize: 32,
+    borderWidth: 1,
+    height: 108,
+    textAlign: 'right',
+    fontWeight: 'bold',
+  },
+  date: {
+    backgroundColor: '#ddd',
+    // flex: 1,
+    padding: 16,
     fontSize: 16,
+    borderWidth: 1,
+    height: 108,
+    flexDirection: 'row',
+  },
+  body: {
+    backgroundColor: '#ddd',
+    // flex: 1,
+    padding: 16,
+    fontSize: 16,
+    borderWidth: 1,
+    height: 108,
+    flexDirection: 'row',
+  },
+  iconBox: {
+    width: '15%',
+    borderWidth: 1,
+
+  },
+  icon: {
+    fontFamily: 'FontAwesome',
+    fontSize: 32,
+    lineHeight: 32,
+    paddingTop: 20,
+  },
+  dateInput: {
+    width: '85%',
+    borderWidth: 1,
+    fontSize: 24,
+    paddingTop: 20,
+    // placeholder: '2019/05/01',
+  },
+  bodyInput: {
+    width: '85%',
+    borderWidth: 1,
+    fontSize: 24,
+    paddingTop: 20,
+    // placeholder: '2019/05/01',
   },
 });
 
