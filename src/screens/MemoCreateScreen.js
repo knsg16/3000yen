@@ -1,10 +1,12 @@
 import React from 'react';
 import { StyleSheet, View, TextInput } from 'react-native';
 import firebase from 'firebase';
+import DatePicker from 'react-native-datepicker';
 import { createIconSet } from '@expo/vector-icons';
 import { Font } from 'expo';
 import fontAwesome from '../../assets/fonts/fa-solid-900.ttf';
 import CircleButton from '../elements/CircleButton';
+
 
 const CustomIcon = createIconSet({
   pencil: '\uf303',
@@ -59,13 +61,33 @@ class MemoEditScreen extends React.Component {
           <View style={styles.iconBox}>
             <CustomIcon name="calendar" style={styles.icon} />
           </View>
-          <TextInput
+          <DatePicker
             style={styles.dateInput}
-            multiline
-            value={this.state.createdOn}
-            onChangeText={(date) => { this.setState({ date }); }}
-            textAlignVertical="top"
+            showIcon={false}
+            date={this.state.date}
+            mode="date"
             placeholder="2019/05/01"
+            format="YYYY/MM/DD"
+            minDate="2019-04-01"
+            // maxDate="2016-06-01"
+            confirmBtnText="確定"
+            cancelBtnText="戻る"
+            customStyles={{
+              dateInput: {
+                borderWidth: 0,
+                justifyContent: 'flex-start',
+                alignItems: 'flex-start',
+              },
+              placeholderText: {
+                fontSize: 24,
+                textAlign: 'left',
+              },
+              dateText: {
+                fontSize: 24,
+              },
+              // ... You can check the source to find the other keys.
+            }}
+            onDateChange={(date) => {this.setState({date: date})}}
           />
         </View>
         <View style={styles.body}>
@@ -113,7 +135,6 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     // flex: 1,
     padding: 16,
-    fontSize: 16,
     borderBottomWidth: 1,
     borderBottomColor: '#979797',
     height: 108,
@@ -142,7 +163,6 @@ const styles = StyleSheet.create({
   dateInput: {
     width: '85%',
     // borderWidth: 1,
-    fontSize: 24,
     paddingTop: 20,
   },
   bodyInput: {
