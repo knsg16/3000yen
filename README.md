@@ -45,6 +45,8 @@ npm install @expo/vector-icons@8.0.0
 npm install --save react-navigation
 npm install --save firebase
 npm install --save moment 
+npm install --save react-native-datepicker
+
 ```
 
 
