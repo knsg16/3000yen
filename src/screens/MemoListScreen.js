@@ -1,37 +1,55 @@
 import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import firebase from 'firebase';
+import moment from 'moment';
 
 // ../ で一個上の階層
 import MemoList from '../components/MemoList';
 import CircleButton from '../elements/CircleButton';
 
-const dt = new Date();
-const y = dt.getFullYear();
-const m = (`00${dt.getMonth() + 1}`).slice(-2);
-const d = (`00${dt.getDate()}`).slice(-2);
-const today = `${y}-${m}-${d}`;
+const today = moment();
+const thisSunday = moment().day(0);
+const thisSaturday = moment().day(6);
+const thisMonthStartDay = moment().date(1);
+const monthDays = moment().daysInMonth();
+const thisMonthEndDay = moment().date(monthDays);
 
 class MemoListScreen extends React.Component {
   state = {
-    total: 0,
+    todayTotal: 0,
+    weekTotal: 0,
+    monthTotal: 0,
   }
 
   constructor() {
     super();
     const { currentUser } = firebase.auth();
     const db = firebase.firestore();
-    console.log('today: ', today);
     db.collection(`users/${currentUser.uid}/records`)
-      .where('date', '==', today)
+      // .where('date', '==', today.format('YYYY/MM/DD'))
       .onSnapshot((snapshot) => {
-        let a = 0;
+        let todayTotal = 0;
+        let weekTotal = 0;
+        let monthTotal = 0;
         snapshot.forEach((doc) => {
-          console.log('amount: ', doc.data().amount);
-          a += doc.data().amount;
+          if (doc.data().date === today.format('YYYY/MM/DD')) {
+            todayTotal += doc.data().amount;
+          }
+
+          if (moment(doc.data().date).isSameOrBefore(thisSaturday.format('YYYY/MM/DD')) && moment(doc.data().date).isSameOrAfter(thisSunday.format('YYYY/MM/DD'))) {
+            weekTotal += doc.data().amount;
+          }
+
+          if (moment(doc.data().date).isSameOrBefore(thisMonthEndDay.format('YYYY/MM/DD')) && moment(doc.data().date).isSameOrAfter(thisMonthStartDay.format('YYYY/MM/DD'))) {
+            monthTotal += doc.data().amount;
+          }
         });
-        this.setState({ total: a });
-        console.log('total:', this.state.total);
+        this.setState({
+          todayTotal,
+          weekTotal,
+          monthTotal,
+        });
+        console.log('total:', this.state.todayTotal);
       });
   }
 
@@ -47,9 +65,9 @@ class MemoListScreen extends React.Component {
             <Text style={styles.header}>今日残り金額</Text>
           </View>
           <View style={styles.contentBox}>
-            <Text style={styles.date}>{today}</Text>
+            <Text style={styles.date}>{today.format('MM/DD')}</Text>
             <Text style={styles.amount}>
-              {3000 - this.state.total}
+              {(3000 - this.state.todayTotal).toLocaleString()}
               円
             </Text>
           </View>
@@ -59,8 +77,11 @@ class MemoListScreen extends React.Component {
             <Text style={styles.header}>今週残り金額</Text>
           </View>
           <View style={styles.contentBox}>
-            <Text style={styles.date}>4/29 - 5/5</Text>
-            <Text style={styles.amount}>3,000円</Text>
+            <Text style={styles.date}>{`${thisSunday.format('MM/DD')}-${thisSaturday.format('MM/DD')}`}</Text>
+            <Text style={styles.amount}>
+              {(21000 - this.state.weekTotal).toLocaleString()}
+              円
+            </Text>
           </View>
         </View>
         <View style={[styles.box, { backgroundColor: '#005684' }]}>
@@ -68,8 +89,11 @@ class MemoListScreen extends React.Component {
             <Text style={styles.header}>今月残り金額</Text>
           </View>
           <View style={styles.contentBox}>
-            <Text style={styles.date}>5/1 - 5/31</Text>
-            <Text style={styles.amount}>3,000円</Text>
+            <Text style={styles.date}>{`${thisMonthStartDay.format('MM/DD')}-${thisMonthEndDay.format('MM/DD')}`}</Text>
+            <Text style={styles.amount}>
+              {(3000 * monthDays - this.state.monthTotal).toLocaleString()}
+              円
+            </Text>
           </View>
         </View>
         {/* <MemoList memoList={this.state.memoList} navigation={this.props.navigation} /> */}

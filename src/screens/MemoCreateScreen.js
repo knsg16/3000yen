@@ -65,7 +65,7 @@ class MemoEditScreen extends React.Component {
             value={this.state.createdOn}
             onChangeText={(date) => { this.setState({ date }); }}
             textAlignVertical="top"
-            placeholder="2019-05-01"
+            placeholder="2019/05/01"
           />
         </View>
         <View style={styles.body}>
@@ -144,14 +144,12 @@ const styles = StyleSheet.create({
     // borderWidth: 1,
     fontSize: 24,
     paddingTop: 20,
-    // placeholder: '2019/05/01',
   },
   bodyInput: {
     width: '85%',
     // borderWidth: 1,
     fontSize: 24,
     paddingTop: 20,
-    // placeholder: '2019/05/01',
   },
 });
 
