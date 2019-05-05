@@ -1,11 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import firebase from 'firebase';
 import moment from 'moment';
 
 // ../ で一個上の階層
-import MemoList from '../components/MemoList';
 import CircleButton from '../elements/CircleButton';
+import SummaryCard from '../elements/SummaryCard';
 
 const today = moment();
 const thisSunday = moment().day(0);
@@ -32,14 +32,13 @@ class MemoListScreen extends React.Component {
         let weekTotal = 0;
         let monthTotal = 0;
         snapshot.forEach((doc) => {
+          // Filterのようにmapとか使って書き直す。
           if (doc.data().date === today.format('YYYY/MM/DD')) {
             todayTotal += doc.data().amount;
           }
-
           if (moment(doc.data().date).isSameOrBefore(thisSaturday.format('YYYY/MM/DD')) && moment(doc.data().date).isSameOrAfter(thisSunday.format('YYYY/MM/DD'))) {
             weekTotal += doc.data().amount;
           }
-
           if (moment(doc.data().date).isSameOrBefore(thisMonthEndDay.format('YYYY/MM/DD')) && moment(doc.data().date).isSameOrAfter(thisMonthStartDay.format('YYYY/MM/DD'))) {
             monthTotal += doc.data().amount;
           }
@@ -64,45 +63,25 @@ class MemoListScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <TouchableHighlight onPress={this.handlePress2.bind(this)}>
-          <View style={[styles.box, { backgroundColor: '#78C8E6' }]}>
-            <View style={styles.headerBox}>
-              <Text style={styles.header}>今日残り金額</Text>
-            </View>
-            <View style={styles.contentBox}>
-              <Text style={styles.date}>{today.format('MM/DD')}</Text>
-              <Text style={styles.amount}>
-                {(3000 - this.state.todayTotal).toLocaleString()}
-                円
-              </Text>
-            </View>
-          </View>
-        </TouchableHighlight>
-        <View style={[styles.box, { backgroundColor: '#DA771B' }]}>
-          <View style={styles.headerBox}>
-            <Text style={styles.header}>今週残り金額</Text>
-          </View>
-          <View style={styles.contentBox}>
-            <Text style={styles.date}>{`${thisSunday.format('MM/DD')}-${thisSaturday.format('MM/DD')}`}</Text>
-            <Text style={styles.amount}>
-              {(21000 - this.state.weekTotal).toLocaleString()}
-              円
-            </Text>
-          </View>
-        </View>
-        <View style={[styles.box, { backgroundColor: '#005684' }]}>
-          <View style={styles.headerBox}>
-            <Text style={styles.header}>今月残り金額</Text>
-          </View>
-          <View style={styles.contentBox}>
-            <Text style={styles.date}>{`${thisMonthStartDay.format('MM/DD')}-${thisMonthEndDay.format('MM/DD')}`}</Text>
-            <Text style={styles.amount}>
-              {(3000 * monthDays - this.state.monthTotal).toLocaleString()}
-              円
-            </Text>
-          </View>
-        </View>
-        {/* <MemoList memoList={this.state.memoList} navigation={this.props.navigation} /> */}
+        <SummaryCard
+          displayAmount={3000 - this.state.todayTotal}
+          period={today.format('MM/DD')}
+          displayPeriod="今日"
+          backgroundColor="#78C8E6"
+          onPress={this.handlePress2.bind(this)}
+        />
+        <SummaryCard
+          displayAmount={21000 - this.state.weekTotal}
+          period={`${thisSunday.format('MM/DD')}-${thisSaturday.format('MM/DD')}`}
+          displayPeriod="今週"
+          backgroundColor="#DA771B"
+        />
+        <SummaryCard
+          displayAmount={(3000 * monthDays) - this.state.monthTotal}
+          period={`${thisMonthStartDay.format('MM/DD')}-${thisMonthEndDay.format('MM/DD')}`}
+          displayPeriod="今月"
+          backgroundColor="#005684"
+        />
         <CircleButton name="plus" onPress={this.handlePress.bind(this)} />
       </View>
     );
@@ -114,47 +93,6 @@ const styles = StyleSheet.create({
     flex: 1,
     width: '100%',
     backgroundColor: '#FFFDF6',
-  },
-  box: {
-    padding: 10,
-    width: '90%',
-    height: 96,
-    // borderWidth: 1,
-    alignSelf: 'center',
-    marginTop: 15,
-    display: 'flex',
-    flexDirection: 'row',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.2,
-  },
-  headerBox: {
-    width: '40%',
-    // borderWidth: 1,
-    fontSize: 24,
-    color: '#fff',
-  },
-  contentBox: {
-    width: '60%',
-    // borderWidth: 1,
-    fontSize: 24,
-    color: '#fff',
-  },
-  header: {
-    fontSize: 24,
-    color: '#fff',
-  },
-  date: {
-    // borderWidth: 1,
-    color: '#fff',
-    height: '30%',
-  },
-  amount: {
-    // borderWidth: 1,
-    height: '70%',
-    fontSize: 32,
-    textAlign: 'right',
-    color: '#fff',
-    fontWeight: 'bold',
   },
 });
 

@@ -6,6 +6,7 @@ import moment from 'moment';
 // ../ で一個上の階層
 import MemoList from '../components/MemoList';
 import CircleButton from '../elements/CircleButton';
+import SummaryCard from '../elements/SummaryCard';
 
 const today = moment();
 
@@ -16,7 +17,6 @@ class MemoListScreen extends React.Component {
 
   // componentが表示される前に処理が行われるということ
   componentWillMount() {
-    console.log('props: ', this.props.amount);
     const { currentUser } = firebase.auth();
     const db = firebase.firestore();
     db.collection(`users/${currentUser.uid}/records`)
@@ -24,7 +24,7 @@ class MemoListScreen extends React.Component {
       .onSnapshot((snapshot) => {
         const memoList = [];
         snapshot.forEach((doc) => {
-          console.log(doc.data());
+          // console.log(doc.data());
           // ...は合体させる時の書き方
           memoList.push({ ...doc.data(), key: doc.id });
         });
@@ -39,19 +39,12 @@ class MemoListScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={[styles.box, { backgroundColor: '#ddd' }]}>
-          <View style={styles.headerBox}>
-            <Text style={styles.header}>今日残り金額</Text>
-          </View>
-          <View style={styles.contentBox}>
-            <Text style={styles.date}>{today.format('MM/DD')}</Text>
-            <Text style={styles.amount}>
-              {this.props.amount}
-              円
-            </Text>
-          </View>
-        </View>
-
+        <SummaryCard
+          backgroundColor="#78C8E6"
+          displayAmount={3000}
+          period={today.format('MM/DD')}
+          displayPeriod="今日"
+        />
         <MemoList memoList={this.state.memoList} navigation={this.props.navigation} />
         <CircleButton name="plus" onPress={this.handlePress.bind(this)} />
       </View>
