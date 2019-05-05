@@ -1,12 +1,11 @@
 import React from 'react';
-import { StyleSheet, View, TextInput } from 'react-native';
+import { StyleSheet, View, TextInput, Text } from 'react-native';
 import firebase from 'firebase';
 import DatePicker from 'react-native-datepicker';
 import { createIconSet } from '@expo/vector-icons';
 import { Font } from 'expo';
 import fontAwesome from '../../assets/fonts/fa-solid-900.ttf';
 import CircleButton from '../elements/CircleButton';
-
 
 const CustomIcon = createIconSet({
   pencil: '\uf303',
@@ -49,14 +48,18 @@ class MemoEditScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <TextInput
-          style={styles.amount}
-          multiline
-          value={this.state.amount}
-          onChangeText={(amount) => { this.setState({ amount }); }}
-          textAlignVertical="top"
-          placeholder="100"
-        />
+        <View style={styles.amount}>
+          <TextInput
+            style={styles.amountInput}
+            value={this.state.amount.toString()}
+            onChangeText={(amount) => { this.setState({ amount }); }}
+            placeholder="100"
+            keyboardType="phone-pad"
+          />
+          <Text style={styles.yen}>
+            円
+          </Text>
+        </View>
         <View style={styles.date}>
           <View style={styles.iconBox}>
             <CustomIcon name="calendar" style={styles.icon} />
@@ -115,21 +118,33 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: '100%',
-
   },
   amount: {
+    flexDirection: 'row',
+    borderBottomWidth: 1,
+    borderBottomColor: '#979797',
+  },
+  amountInput: {
     backgroundColor: '#fff',
     // flex: 1,
     paddingTop: 32,
     paddingLeft: 16,
-    paddingRight: 16,
     paddingBottom: 16,
     fontSize: 32,
-    borderBottomWidth: 1,
-    borderBottomColor: '#979797',
     height: 108,
     textAlign: 'right',
     fontWeight: 'bold',
+    width: '90%',
+  },
+  yen: {
+    fontSize: 32,
+    paddingTop: 46,
+    paddingBottom: 16,
+    backgroundColor: '#fff',
+    // borderWidth: 1,
+    fontWeight: 'bold',
+    height: 108,
+    width: '10%',
   },
   date: {
     backgroundColor: '#fff',
