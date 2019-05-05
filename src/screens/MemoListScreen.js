@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View, Text, TouchableHighlight } from 'react-native';
 import firebase from 'firebase';
 import moment from 'moment';
 
@@ -57,21 +57,27 @@ class MemoListScreen extends React.Component {
     this.props.navigation.navigate('MemoCreate');
   }
 
+  handlePress2() {
+    this.props.navigation.navigate('TodayList');
+  }
+
   render() {
     return (
       <View style={styles.container}>
-        <View style={[styles.box, { backgroundColor: '#78C8E6' }]}>
-          <View style={styles.headerBox}>
-            <Text style={styles.header}>今日残り金額</Text>
+        <TouchableHighlight onPress={this.handlePress2.bind(this)}>
+          <View style={[styles.box, { backgroundColor: '#78C8E6' }]}>
+            <View style={styles.headerBox}>
+              <Text style={styles.header}>今日残り金額</Text>
+            </View>
+            <View style={styles.contentBox}>
+              <Text style={styles.date}>{today.format('MM/DD')}</Text>
+              <Text style={styles.amount}>
+                {(3000 - this.state.todayTotal).toLocaleString()}
+                円
+              </Text>
+            </View>
           </View>
-          <View style={styles.contentBox}>
-            <Text style={styles.date}>{today.format('MM/DD')}</Text>
-            <Text style={styles.amount}>
-              {(3000 - this.state.todayTotal).toLocaleString()}
-              円
-            </Text>
-          </View>
-        </View>
+        </TouchableHighlight>
         <View style={[styles.box, { backgroundColor: '#DA771B' }]}>
           <View style={styles.headerBox}>
             <Text style={styles.header}>今週残り金額</Text>

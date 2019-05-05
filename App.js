@@ -1,6 +1,7 @@
 import { createStackNavigator, createAppContainer } from 'react-navigation';
 import firebase from 'firebase';
 import { Platform } from 'react-native';
+import ENV from './env.json';
 
 import MemoListScreen from './src/screens/MemoListScreen';
 import MemoCreateScreen from './src/screens/MemoCreateScreen';
@@ -8,11 +9,11 @@ import MemoDetailScreen from './src/screens/MemoDetailScreen';
 import MemoEditScreen from './src/screens/MemoEditScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import SignupScreen from './src/screens/SignupScreen';
+import todayListScreen from './src/screens/TodayListScreen';
 
 // eslint-disable-next-line
 require("firebase/firestore");
 
-import ENV from './env.json';
 
 const config = {
   apiKey: ENV.FIREBASE_APIKEY,
@@ -26,6 +27,7 @@ firebase.initializeApp(config);
 
 const App = createStackNavigator({
   Login: { screen: LoginScreen },
+  TodayList: { screen: todayListScreen },
   MemoCreate: { screen: MemoCreateScreen },
   Home: { screen: MemoListScreen },
   Signup: { screen: SignupScreen },
