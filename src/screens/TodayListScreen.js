@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import firebase from 'firebase';
 import moment from 'moment';
 
@@ -10,13 +10,14 @@ import SummaryCard from '../elements/SummaryCard';
 
 const today = moment();
 
-class MemoListScreen extends React.Component {
+class todayListScreen extends React.Component {
   state = {
     memoList: [],
   }
 
   // componentが表示される前に処理が行われるということ
   componentWillMount() {
+    console.log('props: ', this.props);
     const { currentUser } = firebase.auth();
     const db = firebase.firestore();
     db.collection(`users/${currentUser.uid}/records`)
@@ -24,7 +25,6 @@ class MemoListScreen extends React.Component {
       .onSnapshot((snapshot) => {
         const memoList = [];
         snapshot.forEach((doc) => {
-          // console.log(doc.data());
           // ...は合体させる時の書き方
           memoList.push({ ...doc.data(), key: doc.id });
         });
@@ -37,13 +37,14 @@ class MemoListScreen extends React.Component {
   }
 
   render() {
+    const { displayAmount, period, displayPeriod } = this.props.navigation.state.params;
     return (
       <View style={styles.container}>
         <SummaryCard
           backgroundColor="#78C8E6"
-          displayAmount={3000}
-          period={today.format('MM/DD')}
-          displayPeriod="今日"
+          displayAmount={displayAmount}
+          period={period}
+          displayPeriod={displayPeriod}
         />
         <MemoList memoList={this.state.memoList} navigation={this.props.navigation} />
         <CircleButton name="plus" onPress={this.handlePress.bind(this)} />
@@ -101,4 +102,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default MemoListScreen;
+export default todayListScreen;

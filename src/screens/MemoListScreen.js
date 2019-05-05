@@ -48,7 +48,9 @@ class MemoListScreen extends React.Component {
           weekTotal,
           monthTotal,
         });
-        console.log('total:', this.state.todayTotal);
+        console.log('todayTotal:', this.state.todayTotal);
+        console.log('weekTotal:', this.state.weekTotal);
+        console.log('monthTotal:', this.state.monthTotal);
       });
   }
 
@@ -56,8 +58,12 @@ class MemoListScreen extends React.Component {
     this.props.navigation.navigate('MemoCreate');
   }
 
-  handlePress2() {
-    this.props.navigation.navigate('TodayList');
+  handlePressToday() {
+    this.props.navigation.navigate('TodayList', {
+      displayAmount: 3000 - this.state.todayTotal,
+      period: today.format('MM/DD'),
+      displayPeriod: '今日',
+    });
   }
 
   render() {
@@ -68,7 +74,7 @@ class MemoListScreen extends React.Component {
           period={today.format('MM/DD')}
           displayPeriod="今日"
           backgroundColor="#78C8E6"
-          onPress={this.handlePress2.bind(this)}
+          onPress={this.handlePressToday.bind(this)}
         />
         <SummaryCard
           displayAmount={21000 - this.state.weekTotal}
