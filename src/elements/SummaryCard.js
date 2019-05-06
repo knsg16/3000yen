@@ -6,7 +6,7 @@ class SummaryCard extends React.Component {
     return (
       <TouchableHighlight
         onPress={this.props.onPress}
-        displayAmount={3000}
+        underlayColor="transparent"
       >
         <View style={[styles.box, { backgroundColor: this.props.backgroundColor }]}>
           <View style={styles.headerBox}>

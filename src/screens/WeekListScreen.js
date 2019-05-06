@@ -10,7 +10,7 @@ import SummaryCard from '../elements/SummaryCard';
 
 const today = moment();
 
-class TodayListScreen extends React.Component {
+class weekListScreen extends React.Component {
   state = {
     memoList: [],
   }
@@ -21,7 +21,8 @@ class TodayListScreen extends React.Component {
     const { currentUser } = firebase.auth();
     const db = firebase.firestore();
     db.collection(`users/${currentUser.uid}/records`)
-      .where('date', '==', today.format('YYYY/MM/DD'))
+      .where('weekNum', '==', today.week())
+      .where('yearNum', '==', today.year())
       .onSnapshot((snapshot) => {
         const memoList = [];
         snapshot.forEach((doc) => {
@@ -41,7 +42,7 @@ class TodayListScreen extends React.Component {
     return (
       <View style={styles.container}>
         <SummaryCard
-          backgroundColor="#78C8E6"
+          backgroundColor="#DA771B"
           displayAmount={displayAmount}
           period={period}
           displayPeriod={displayPeriod}
@@ -102,4 +103,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TodayListScreen;
+export default weekListScreen;

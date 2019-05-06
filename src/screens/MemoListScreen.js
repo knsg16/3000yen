@@ -21,8 +21,7 @@ class MemoListScreen extends React.Component {
     monthTotal: 0,
   }
 
-  constructor() {
-    super();
+  componentWillMount() {
     const { currentUser } = firebase.auth();
     const db = firebase.firestore();
     db.collection(`users/${currentUser.uid}/records`)
@@ -48,7 +47,9 @@ class MemoListScreen extends React.Component {
           weekTotal,
           monthTotal,
         });
-        console.log('total:', this.state.todayTotal);
+        console.log('todayTotal:', this.state.todayTotal);
+        console.log('weekTotal:', this.state.weekTotal);
+        console.log('monthTotal:', this.state.monthTotal);
       });
   }
 
@@ -56,8 +57,28 @@ class MemoListScreen extends React.Component {
     this.props.navigation.navigate('MemoCreate');
   }
 
-  handlePress2() {
-    this.props.navigation.navigate('TodayList');
+  handlePressToday() {
+    this.props.navigation.navigate('TodayList', {
+      displayAmount: 3000 - this.state.todayTotal,
+      period: today.format('MM/DD'),
+      displayPeriod: '今日',
+    });
+  }
+
+  handlePressWeek() {
+    this.props.navigation.navigate('WeekList', {
+      displayAmount: 21000 - this.state.weekTotal,
+      period: `${thisSunday.format('MM/DD')}-${thisSaturday.format('MM/DD')}`,
+      displayPeriod: '今週',
+    });
+  }
+
+  handlePressMonth() {
+    this.props.navigation.navigate('MonthList', {
+      displayAmount: (3000 * monthDays) - this.state.monthTotal,
+      period: `${thisMonthStartDay.format('MM/DD')}-${thisMonthEndDay.format('MM/DD')}`,
+      displayPeriod: '今月',
+    });
   }
 
   render() {
@@ -68,19 +89,21 @@ class MemoListScreen extends React.Component {
           period={today.format('MM/DD')}
           displayPeriod="今日"
           backgroundColor="#78C8E6"
-          onPress={this.handlePress2.bind(this)}
+          onPress={this.handlePressToday.bind(this)}
         />
         <SummaryCard
           displayAmount={21000 - this.state.weekTotal}
           period={`${thisSunday.format('MM/DD')}-${thisSaturday.format('MM/DD')}`}
           displayPeriod="今週"
           backgroundColor="#DA771B"
+          onPress={this.handlePressWeek.bind(this)}
         />
         <SummaryCard
           displayAmount={(3000 * monthDays) - this.state.monthTotal}
           period={`${thisMonthStartDay.format('MM/DD')}-${thisMonthEndDay.format('MM/DD')}`}
           displayPeriod="今月"
           backgroundColor="#005684"
+          onPress={this.handlePressMonth.bind(this)}
         />
         <CircleButton name="plus" onPress={this.handlePress.bind(this)} />
       </View>
