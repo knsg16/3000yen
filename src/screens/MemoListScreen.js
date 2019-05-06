@@ -21,8 +21,7 @@ class MemoListScreen extends React.Component {
     monthTotal: 0,
   }
 
-  constructor() {
-    super();
+  componentWillMount() {
     const { currentUser } = firebase.auth();
     const db = firebase.firestore();
     db.collection(`users/${currentUser.uid}/records`)

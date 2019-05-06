@@ -23,7 +23,6 @@ class MonthListScreen extends React.Component {
     db.collection(`users/${currentUser.uid}/records`)
       .where('monthNum', '==', today.month() + 1)
       .where('yearNum', '==', today.year())
-      .orderBy("name")
       .onSnapshot((snapshot) => {
         const memoList = [];
         snapshot.forEach((doc) => {
