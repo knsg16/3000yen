@@ -1,9 +1,12 @@
 import React from 'react';
-import { StyleSheet, View, TextInput, Text } from 'react-native';
+import {
+  StyleSheet, View, TextInput, Text,
+} from 'react-native';
 import firebase from 'firebase';
 import DatePicker from 'react-native-datepicker';
 import { createIconSet } from '@expo/vector-icons';
 import { Font } from 'expo';
+import moment from 'moment';
 import fontAwesome from '../../assets/fonts/fa-solid-900.ttf';
 import CircleButton from '../elements/CircleButton';
 
@@ -30,11 +33,16 @@ class MemoEditScreen extends React.Component {
 
   handlePress() {
     const db = firebase.firestore();
+    const { date, body, amount } = this.state;
+    const inputMomentDate = moment(date);
     db.collection(`users/${firebase.auth().currentUser.uid}/records`).add({
-      body: this.state.body,
-      amount: Number(this.state.amount),
-      date: this.state.date,
-      createdOn: new Date(),
+      body,
+      amount: Number(amount),
+      date,
+      createdOn: moment().toDate(),
+      weekNum: inputMomentDate.week(),
+      monthNum: inputMomentDate.month() + 1,
+      yearNum: inputMomentDate.year(),
     })
       .then((docRef) => {
         console.log('Successfully Added: ', docRef.id);
@@ -90,7 +98,7 @@ class MemoEditScreen extends React.Component {
               },
               // ... You can check the source to find the other keys.
             }}
-            onDateChange={(date) => {this.setState({date: date})}}
+            onDateChange={(date) => { this.setState({ date }); }}
           />
         </View>
         <View style={styles.body}>

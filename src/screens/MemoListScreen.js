@@ -66,6 +66,22 @@ class MemoListScreen extends React.Component {
     });
   }
 
+  handlePressWeek() {
+    this.props.navigation.navigate('WeekList', {
+      displayAmount: 21000 - this.state.weekTotal,
+      period: `${thisSunday.format('MM/DD')}-${thisSaturday.format('MM/DD')}`,
+      displayPeriod: '今週',
+    });
+  }
+
+  handlePressMonth() {
+    this.props.navigation.navigate('MonthList', {
+      displayAmount: (3000 * monthDays) - this.state.monthTotal,
+      period: `${thisMonthStartDay.format('MM/DD')}-${thisMonthEndDay.format('MM/DD')}`,
+      displayPeriod: '今月',
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -81,12 +97,14 @@ class MemoListScreen extends React.Component {
           period={`${thisSunday.format('MM/DD')}-${thisSaturday.format('MM/DD')}`}
           displayPeriod="今週"
           backgroundColor="#DA771B"
+          onPress={this.handlePressWeek.bind(this)}
         />
         <SummaryCard
           displayAmount={(3000 * monthDays) - this.state.monthTotal}
           period={`${thisMonthStartDay.format('MM/DD')}-${thisMonthEndDay.format('MM/DD')}`}
           displayPeriod="今月"
           backgroundColor="#005684"
+          onPress={this.handlePressMonth.bind(this)}
         />
         <CircleButton name="plus" onPress={this.handlePress.bind(this)} />
       </View>

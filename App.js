@@ -9,7 +9,9 @@ import MemoDetailScreen from './src/screens/MemoDetailScreen';
 import MemoEditScreen from './src/screens/MemoEditScreen';
 import LoginScreen from './src/screens/LoginScreen';
 import SignupScreen from './src/screens/SignupScreen';
-import todayListScreen from './src/screens/TodayListScreen';
+import TodayListScreen from './src/screens/TodayListScreen';
+import WeekListScreen from './src/screens/WeekListScreen';
+import MonthListScreen from './src/screens/MonthListScreen';
 
 // eslint-disable-next-line
 require("firebase/firestore");
@@ -27,7 +29,9 @@ firebase.initializeApp(config);
 
 const App = createStackNavigator({
   Login: { screen: LoginScreen },
-  TodayList: { screen: todayListScreen },
+  TodayList: { screen: TodayListScreen },
+  WeekList: { screen: WeekListScreen },
+  MonthList: { screen: MonthListScreen },
   MemoCreate: { screen: MemoCreateScreen },
   Home: { screen: MemoListScreen },
   Signup: { screen: SignupScreen },

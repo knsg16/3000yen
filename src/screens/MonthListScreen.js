@@ -10,7 +10,7 @@ import SummaryCard from '../elements/SummaryCard';
 
 const today = moment();
 
-class TodayListScreen extends React.Component {
+class MonthListScreen extends React.Component {
   state = {
     memoList: [],
   }
@@ -21,7 +21,9 @@ class TodayListScreen extends React.Component {
     const { currentUser } = firebase.auth();
     const db = firebase.firestore();
     db.collection(`users/${currentUser.uid}/records`)
-      .where('date', '==', today.format('YYYY/MM/DD'))
+      .where('monthNum', '==', today.month() + 1)
+      .where('yearNum', '==', today.year())
+      .orderBy("name")
       .onSnapshot((snapshot) => {
         const memoList = [];
         snapshot.forEach((doc) => {
@@ -41,7 +43,7 @@ class TodayListScreen extends React.Component {
     return (
       <View style={styles.container}>
         <SummaryCard
-          backgroundColor="#78C8E6"
+          backgroundColor="#005684"
           displayAmount={displayAmount}
           period={period}
           displayPeriod={displayPeriod}
@@ -102,4 +104,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default TodayListScreen;
+export default MonthListScreen;
