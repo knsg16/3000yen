@@ -1,24 +1,29 @@
 import React from 'react';
-import { StyleSheet, View, TouchableHighlight, Text } from 'react-native';
+import {
+  StyleSheet, View, TouchableHighlight, Text,
+} from 'react-native';
 
 class SummaryCard extends React.Component {
   render() {
+    const {
+      onPress, backgroundColor, displayPeriod, period, displayAmount,
+    } = this.props;
     return (
       <TouchableHighlight
-        onPress={this.props.onPress}
+        onPress={onPress}
         underlayColor="transparent"
       >
-        <View style={[styles.box, { backgroundColor: this.props.backgroundColor }]}>
+        <View style={[styles.box, { backgroundColor }]}>
           <View style={styles.headerBox}>
             <Text style={styles.header}>
-              {this.props.displayPeriod}
+              {displayPeriod}
               残り金額
             </Text>
           </View>
           <View style={styles.contentBox}>
-            <Text style={styles.date}>{this.props.period}</Text>
+            <Text style={styles.date}>{period}</Text>
             <Text style={styles.amount}>
-              {this.props.displayAmount}
+              {displayAmount}
               円
             </Text>
           </View>
