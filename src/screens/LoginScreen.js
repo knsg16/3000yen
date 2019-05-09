@@ -13,26 +13,45 @@ class LoginScreen extends React.Component {
   }
 
   // eslint-disable-next-line
-  handleSubmit() {
-    firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
-      .then((user) => {
-        console.log('Success', user);
-        this.props.navigation.navigate('Home');
-        const reactAction = StackActions.reset({
-          index: 0,
-          actions: [
-            NavigationActions.navigate({ routeName: 'Home' }),
-          ],
-        });
-        this.props.navigation.dispatch(reactAction);
-      })
-      .catch((error) => {
-        console.log('Error:', error);
+  async handleSubmit() {
+    // firebase.auth().signInWithEmailAndPassword(this.state.email, this.state.password)
+    //   .then((user) => {
+    //     console.log('Success', user);
+    //     this.props.navigation.navigate('Home');
+    //     const reactAction = StackActions.reset({
+    //       index: 0,
+    //       actions: [
+    //         NavigationActions.navigate({ routeName: 'Home' }),
+    //       ],
+    //     });
+    //     this.props.navigation.dispatch(reactAction);
+    //   })
+    //   .catch((error) => {
+    //     console.log('Error:', error);
+    //   });
+
+    // asyncとawaitで上の.getと同じことをやってる
+    try {
+      const { email, password } = this.state;
+      const navigation = this.props;
+      const user = await firebase.auth().signInWithEmailAndPassword(email, password);
+      console.log('Success', user);
+      // switch navigator使うのがよい。この例はゴリ押し
+      const reactAction = StackActions.reset({
+        index: 0,
+        actions: [
+          NavigationActions.navigate({ routeName: 'Home' }),
+        ],
       });
+      navigation.dispatch(reactAction);
+    } catch (e) {
+      console.warn(e);
+    }
   }
 
   handlePress() {
-    this.props.navigation.navigate('Signup');
+    const navigation = this.props;
+    navigation.navigate('Signup');
   }
 
   render() {
