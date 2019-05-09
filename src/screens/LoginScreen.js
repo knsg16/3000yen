@@ -33,7 +33,6 @@ class LoginScreen extends React.Component {
     // asyncとawaitで上の.getと同じことをやってる
     try {
       const { email, password } = this.state;
-      const navigation = this.props;
       const user = await firebase.auth().signInWithEmailAndPassword(email, password);
       console.log('Success', user);
       // switch navigator使うのがよい。この例はゴリ押し
@@ -43,7 +42,7 @@ class LoginScreen extends React.Component {
           NavigationActions.navigate({ routeName: 'Home' }),
         ],
       });
-      navigation.dispatch(reactAction);
+      this.props.navigation.dispatch(reactAction);
     } catch (e) {
       console.warn(e);
     }
